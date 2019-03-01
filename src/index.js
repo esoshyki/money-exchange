@@ -1,38 +1,48 @@
 // PLEASE DON'T change function name
 module.exports = function makeExchange(currency) {
-    // Your code goes here!
-    // Return an object containing the minimum number of coins needed to make change
+    var counter = function(currentostatok, value) {
+        
+        if (currentostatok == 0) { return false }
+        var arr = [];
+        var coincount = Math.floor(currentostatok/value);
+        var ostatok = currentostatok%value;
+        if (coincount == 0 && ostatok == 0) {
+            return false
+        }
+        else {
+            if (coincount == 0) { 
+                arr.push(coincount, ostatok)
+                return arr}
+        
+            else {
+                arr.push(coincount, ostatok);
+                return arr;                    
+                }
+            }
+    };
+
     var ans = {};
     if (currency > 10000) {
         ans['error'] = "You are rich, my friend! We don't have so much coins for exchange"
         return ans;
     }
-
-var ostatok = currency%50;
-var count = Math.floor(currency/50);
-ans['H'] = count
-if (ostatok == 0) {
+    if (currency < 0) { 
+        return ans;   
+    }
+    var items = ['H', 'Q', 'D', 'N', 'P'];
+    var value = [50, 25, 10, 5, 1];
+    var ostatok = currency;
+    for (i in items) {
+        var arrr = counter(ostatok, value[i]);
+        if (arrr) {
+            ostatok = arrr[1];
+            var item = items[i];
+            if (arrr[0] != 0) {
+            ans[item] = arrr[0];
+            }
+        }
+        else { break };
+    
+    }
     return ans;
-};
-count = Math.floor(ostatok/25);
-ans['Q'] = count;
-ostatok -= count*25;
-if (ostatok == 0) {
-    return ans;
-};
-count = Math.floor(ostatok/10);
-ans['D'] = count;
-ostatok -= count*10;
-if (ostatok == 0) {
-    return ans;
-};
-count = Math.floor(ostatok/5);
-ans['N'] = count;
-ostatok -= count*5;
-if (ostatok == 0) {
-    return ans;
-};
-
-ans['P'] = ostatok;
-return ans;
 };
